@@ -1,0 +1,12 @@
+`timescale 1ns / 1ns
+
+module fullAdder(input A, input B, input cIn, output sum, output cOut);
+
+wire[50:0]w;
+
+xor xor1(w[0],A,B);
+xor xorSum(sum, w[0], cIn);
+and and1(w[2], w[0], cIn);
+and and2(w[3], A, B);
+or carryOut(cOut, w[2], w[3]);
+endmodule

@@ -1,0 +1,10 @@
+`timescale 1ns / 1ns
+
+module RCA(input [3:0] A, input [3:0] B, input cIn, output [3:0] sum, output carryOut);
+wire [10:0] w;
+//fullAdder FA0(input A[0], input B[0], input cIn, output sum, output cOut);
+fullAdder FA0(A[0], B[0], cIn, sum[0], w[0]);
+fullAdder FA1(A[1], B[1], w[0], sum[1], w[1]);
+fullAdder FA2(A[2], B[2], w[1], sum[2], w[2]);
+fullAdder FA3(A[3], B[3], w[2], sum[3], carryOut);
+endmodule

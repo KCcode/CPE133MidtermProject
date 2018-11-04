@@ -1,0 +1,26 @@
+`timescale 1ns / 1ns
+
+module mux4x1(input D3, input D2, input D1, input D0, 
+input sel1, input sel0, output temperature);
+
+wire [20:0] w;
+
+not notS0(w[0], sel0);
+not notS1(w[1], sel1);
+ 
+and A0(w[2], D0, w[0], w[1]);
+
+and A1(w[3], D1, w[1], sel0);
+
+and A2(w[4], D2, sel1, w[0]);
+
+and A3(w[5], D3, sel0, sel1);
+
+or or0(w[6], w[2], w[3]);
+or or1(w[7], w[4], w[5]);
+
+or finalOr(temperature, w[6], w[7]);
+
+// Extra output option and A3()
+
+endmodule

@@ -1,0 +1,12 @@
+`timescale 1ns / 1ns
+    
+module register(input [n:0] D, input clr, input ld, input St, input clk, 
+output [3:0]Q, output [3:0]QB); 
+    parameter n = 3;
+    wire [3:0]s;
+    DFF D1( D[0], clr, ld, St, clk, Q[0], QB[0]);
+    DFF D2( D[1], clr, ld, St, clk, Q[1], QB[1]);
+    DFF D3( D[2], clr, ld, St, clk, Q[2], QB[2]);
+    DFF D4( D[3], clr, ld, St, clk, Q[3], QB[3]);
+    
+endmodule

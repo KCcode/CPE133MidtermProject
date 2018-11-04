@@ -1,0 +1,50 @@
+`timescale 1ns / 1ns
+module main(input [3:0] data, input sel0, input sel1, input clk, 
+input clr, input ld, input St, output [3:0] temp);
+
+wire[3:0] setWire1;
+wire[3:0] product;
+wire[3:0] setWire2;
+wire[3:0] fahrenheitConversion;
+wire[3:0] kelvinConversion;
+wire[50:0] freeWire;
+
+//module register(input [n:0] D, input clr, input ld, input St, input clk, output [3:0]Q, output [3:0]QB); 
+//Put the clear and set as 0 and load as 1 in the code to take the switches out of the constraint
+register reg1(data, 4'b0000, 4'b0001, 4'b0000, clk, setWire1, setWire2);
+
+/*
+Menu Selection
+option 00 -> Celsius (Default Input: No conversion needed)
+option 01 ->Fahrenheit(multiply by 2 and add 3 to the default value)
+option 10 -> Kelvin(add 2 to the default value)
+option 11 -> Nothing(outputs zero)
+*/
+
+//OPTION 01
+//module multiplier(input [3:0] Q, input [3:0] M, output [7:0] P);
+multiplier multByTwo(setWire1, 4'b0010, product);
+
+//module RCA(input [3:0] A, input [3:0] B, input cIn, output [3:0] sum, output carryOut);
+//For Fahrenheit add 4-bit 3
+RCA fahrenheit(product, 4'b0011, 1'b0, fahrenheitConversion, freeWire[0]);
+
+//Option 10
+//For Kelvin add 4-bit 2
+RCA kelvin(setWire1, 4'b0010, 1'b0, kelvinConversion, freeWire[1]);
+
+//module mux4x1(input D3, input D2, input D1, input D0, 
+//input sel1, input sel0, output temperature);
+mux4x1 lsb(1'b0, kelvinConversion[0], fahrenheitConversion[0], 
+data[0], sel1, sel0, temp[0]);
+
+mux4x1 mux1(1'b0, kelvinConversion[1], fahrenheitConversion[1], 
+data[1], sel1, sel0, temp[1]);
+
+mux4x1 mux2(1'b0, kelvinConversion[2], fahrenheitConversion[2], 
+data[2], sel1, sel0, temp[2]);
+
+mux4x1 msb(1'b0, kelvinConversion[3], fahrenheitConversion[3], 
+data[3], sel1, sel0, temp[3]);
+
+endmodule

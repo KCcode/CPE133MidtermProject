@@ -1,0 +1,24 @@
+`timescale 1ns / 1ns
+
+module DFF( input D, input clr, input ld, input St, input clk, output Q, output QB );
+    reg QB, Q; // reg means registar, a port that can hold data
+    always_ff @(posedge clk)
+    begin // beginning of always
+    if(St == 1'b1 && clr == 1'b0)
+    begin
+    Q = 1'b1;
+    QB = 1'b0;
+    end
+    if(St == 1'b0 && clr == 1'b1)
+    begin
+    Q = 1'b0;
+    QB = 1'b1;
+    end
+    else if(ld ==1'b1 && St == 1'b0 && clr == 1'b0)
+    begin
+    Q = D;
+    end
+    QB = ~Q;
+    end; // ending of always
+endmodule
+
